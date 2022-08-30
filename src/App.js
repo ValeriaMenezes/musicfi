@@ -13,7 +13,6 @@ class App extends React.Component {
     return (
       <div>
         <Switch>
-          {/* <p>TrybeTunes</p> */}
           <Route
             exact
             path="/"
