@@ -31,17 +31,8 @@ class Login extends React.Component {
     const { nameUser } = this.state;
     await createUser({ name: nameUser });
     this.setState({ loading: 'redirecionando' });
-
-    // const { loading } = this.state;
-    // <Switch>
-    //     <Route
-    //     path="/loading"
-    //     component={ Loading }
-    //   >
-    //     { loading === 'carregando' && <Loading /> }
-    //   </Route>
-    //   </Switch>;
   };
+  // Italo Lacerda me ajudou no requisito 2
 
   render() {
     const { nameUser, enabledButton, loading } = this.state;
