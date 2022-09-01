@@ -25,7 +25,7 @@ class Album extends React.Component {
 
   render() {
     const { data, dataInfo } = this.state;
-    console.log('1', dataInfo);
+    // console.log('1', dataInfo);
     return (
       <div data-testid="page-album">
         <Header />
@@ -35,6 +35,9 @@ class Album extends React.Component {
           <MusicCard
             key={ index }
             musicName={ item.trackName }
+            trackId={ item.trackId }
+            previewUrl={ item.previewUrl }
+            track={ item }
           />))}
       </div>
     );
@@ -44,7 +47,7 @@ class Album extends React.Component {
 Album.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
     }),
   }).isRequired,
 };
