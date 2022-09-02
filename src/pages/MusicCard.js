@@ -8,7 +8,7 @@ class MusicCard extends React.Component {
     super();
     this.state = {
       loading: false,
-      dataFavorites: [],
+      // dataFavorites: [],
       checked: false,
     };
   }
