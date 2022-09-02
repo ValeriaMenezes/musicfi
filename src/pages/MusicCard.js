@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 class MusicCard extends React.Component {
@@ -8,18 +8,30 @@ class MusicCard extends React.Component {
     super();
     this.state = {
       loading: false,
-      // dataFavorites: [],
+      dataFavorites: [],
       checked: false,
     };
+  }
+
+  async componentDidMount() {
+    const { trackId } = this.props;
+    // this.setState({
+    //   loading: true,
+    // });
+    const response = await getFavoriteSongs();
+    const verificacao = response.some((item) => item.trackId === trackId);
+
+    this.setState({
+      // loading: false,
+      checked: verificacao,
+    });
   }
 
   handleChangeClick = async (track) => {
     this.setState({
       loading: true,
     });
-    // const { match: { params: { id } } } = this.props;
     await addSong(track);
-    // console.log('2', id);
     this.setState({
       loading: false,
       // dataFavorites: response,
@@ -27,11 +39,7 @@ class MusicCard extends React.Component {
     });
   };
 
-  // handleChangeClick = async ({ target }) => {
-  //   const {  }
-  //   await addSong(track);
-  //   console.log('chamou');
-  // };
+  // Italo Lacerda e Gabriel Machado me ajudaram no requisito 8
 
   render() {
     const { loading, checked } = this.state;
