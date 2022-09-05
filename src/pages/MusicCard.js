@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 class MusicCard extends React.Component {
@@ -8,21 +8,17 @@ class MusicCard extends React.Component {
     super();
     this.state = {
       loading: false,
-      // dataFavorites: [],
       checked: false,
     };
   }
 
   async componentDidMount() {
     const { trackId } = this.props;
-    // this.setState({
-    //   loading: true,
-    // });
     const response = await getFavoriteSongs();
+    // console.log(response);
     const verificacao = response.some((item) => item.trackId === trackId);
 
     this.setState({
-      // loading: false,
       checked: verificacao,
     });
   }
@@ -31,15 +27,25 @@ class MusicCard extends React.Component {
     this.setState({
       loading: true,
     });
-    await addSong(track);
-    this.setState({
-      loading: false,
-      // dataFavorites: response,
-      checked: true,
-    });
+    const { checked } = this.state;
+    if (checked) {
+      await removeSong(track);
+      console.log('track:', track);
+      this.setState({
+        loading: false,
+        checked: false,
+      });
+    } else {
+      await addSong(track);
+      this.setState({
+        checked: true,
+        loading: false,
+      });
+      console.log('oi', checked);
+    }
   };
 
-  // Italo Lacerda e Gabriel Machado me ajudaram no requisito 8
+  // Italo Lacerda e Gabriel Machado me ajudaram no requisito 8 e 9
 
   render() {
     const { loading, checked } = this.state;
