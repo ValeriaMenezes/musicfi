@@ -15,7 +15,6 @@ class MusicCard extends React.Component {
   async componentDidMount() {
     const { trackId } = this.props;
     const response = await getFavoriteSongs();
-    // console.log(response);
     const verificacao = response.some((item) => item.trackId === trackId);
 
     this.setState({
@@ -23,25 +22,28 @@ class MusicCard extends React.Component {
     });
   }
 
-  handleChangeClick = async (track) => {
+  handleChangeClick = async (track, paramFunc) => {
+    const { handleCallback } = this.props;
     this.setState({
       loading: true,
     });
     const { checked } = this.state;
     if (checked) {
       await removeSong(track);
-      console.log('track:', track);
       this.setState({
         loading: false,
         checked: false,
       });
     } else {
       await addSong(track);
+      console.log(track);
       this.setState({
         checked: true,
         loading: false,
       });
-      console.log('oi', checked);
+    }
+    if (handleCallback) {
+      paramFunc();
     }
   };
 
@@ -49,7 +51,7 @@ class MusicCard extends React.Component {
 
   render() {
     const { loading, checked } = this.state;
-    const { musicName, trackId, previewUrl, track } = this.props;
+    const { musicName, trackId, previewUrl, track, handleCallback } = this.props;
     return (
       loading ? <Loading /> : (
         <div>
@@ -69,7 +71,7 @@ class MusicCard extends React.Component {
               id={ trackId }
               type="checkbox"
               checked={ checked }
-              onChange={ () => this.handleChangeClick(track) }
+              onChange={ () => this.handleChangeClick(track, handleCallback) }
             />
           </label>
         </div>
@@ -83,6 +85,7 @@ MusicCard.propTypes = {
   trackId: PropTypes.number.isRequired,
   track: PropTypes.shape.isRequired,
   previewUrl: PropTypes.string.isRequired,
+  handleCallback: PropTypes.func.isRequired,
 };
 
 export default MusicCard;
